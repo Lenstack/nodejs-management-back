@@ -9,6 +9,17 @@ const signUp = async (req, res) => {
 
     try {
         const {email, password, name} = req.body
+
+        const isMatch = await prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+        })
+
+        if (isMatch) {
+            return res.status(400).send({error: "Account already been registered"});
+        }
+
         const user = await prisma.user.create({
             data: {
                 email: email,
@@ -16,13 +27,16 @@ const signUp = async (req, res) => {
                 name: name,
             },
         })
-        res.status(200).send({Status: "Created", Authentication: jwtUtil.createToken(user)});
+        res.status(201).send({Status: "Created", Authentication: jwtUtil.createToken(user)});
     } catch (err) {
         res.status(500).send({error: err});
     }
 };
 
 const signIn = async (req, res) => {
+    const {error} = validateUtil.validateSignIn(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
+
     try {
         const {email, password} = req.body
         const user = await prisma.user.findUnique({
@@ -51,11 +65,21 @@ const signOut = async (req, res) => {
     try {
         res.status(200).send({Status: "Success"});
     } catch (err) {
+        res.status(500).send({error: err});
     }
 };
+
+const resetPassword = (req, res) => {
+    try {
+        res.status(200).send({Status: "Success"});
+    } catch (err) {
+        res.status(500).send({error: err});
+    }
+}
 
 module.exports = {
     signUp,
     signIn,
     signOut,
+    resetPassword
 }

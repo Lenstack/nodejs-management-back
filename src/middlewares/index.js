@@ -1,6 +1,5 @@
-const {checkAuthenticated, checkAuthorized} = require("./auth.middleware");
+const authMiddleware = require("./auth.middleware");
 
 module.exports = {
-    checkAuthenticated,
-    checkAuthorized
+    authMiddleware
 }

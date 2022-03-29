@@ -49,7 +49,12 @@ const decodeToken = (token) => {
     })
 }
 
+const refreshToken = () => {
+
+}
+
 module.exports = {
     createToken,
-    decodeToken
+    decodeToken,
+    refreshToken
 };
