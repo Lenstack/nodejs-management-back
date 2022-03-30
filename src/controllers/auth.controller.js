@@ -1,5 +1,6 @@
 const {PrismaClient} = require('@prisma/client')
 const {jwtUtil, validateUtil, bcryptUtil} = require("../utils")
+const config = require("../config");
 
 const prisma = new PrismaClient()
 
@@ -25,6 +26,11 @@ const signUp = async (req, res) => {
                 email: email,
                 password: await bcryptUtil.hashPassword(password),
                 name: name,
+                roles: {
+                    create: [
+                        {name: config.ROLES.member},
+                    ],
+                },
             },
         })
         res.status(201).send({Status: "Created", Authentication: jwtUtil.createToken(user)});

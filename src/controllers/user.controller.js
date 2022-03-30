@@ -44,7 +44,6 @@ const update = async (req, res) => {
                 name: name,
                 email: email
             },
-
         })
         res.status(200).send({status: "Success", user});
     } catch (err) {
