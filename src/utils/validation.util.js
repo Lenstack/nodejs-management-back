@@ -15,7 +15,15 @@ const validateSignIn = (data) => {
     }).validate(data)
 }
 
+const validateUserUpdate = (data) => {
+    return joi.object({
+        name: joi.string().min(3),
+        email: joi.string().email().min(5),
+    }).validate(data)
+}
+
 module.exports = {
     validateSignUp,
-    validateSignIn
+    validateSignIn,
+    validateUserUpdate
 }
